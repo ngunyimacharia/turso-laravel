@@ -72,7 +72,9 @@ class TursoLaravelServiceProvider extends PackageServiceProvider
         parent::register();
 
         $this->app->scoped(TursoManager::class, function () {
-            return new TursoManager(config('database.connections.turso', []));
+            $connection = config('database.default', 'turso');
+
+            return new TursoManager(config("database.connections.$connection", []));
         });
 
         $this->app->extend(DatabaseManager::class, function (DatabaseManager $manager) {
